@@ -41,8 +41,8 @@ function createAddWindow() {
         webPreferences: {
             nodeIntegration: true
         },
-        width: 300,
-        height: 200,
+        width: 500,
+        height: 300,
         title: 'Add Password'
     });
     // Load html into window
@@ -69,13 +69,13 @@ const mainMenuTemplate = [
     label:'File',
     submenu:[
         {
-            label: 'Add Item',
+            label: 'Add Password',
             click() {
                 createAddWindow();
             }
         },
         {
-            label: 'Clear Items',
+            label: 'Clear Passwords',
             click() {
                 mainWindow.webContents.send('item:clear')
             }
