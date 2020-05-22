@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/michellehwin/hackmhs/issues"
   },
-  "homepage": "https://github.com/michellehwin/hackmhs#readme"
+  "homepage": "https://github.com/michellehwin/hackmhs#readme",
+  "devDependencies": {
+    "electron": "^9.0.0"
+  }
 }
