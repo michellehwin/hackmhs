@@ -39,7 +39,7 @@ function parseDataFile(filePath) {
     return JSON.parse(fs.readFileSync(filePath));
   } catch(error) {
     // if there was some kind of error, return the passed in defaults instead.
-      return [];
+      return [{website: 'site', username: 'user', password: 'pass'}];
   }
 }
 

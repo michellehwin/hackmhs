@@ -18,8 +18,25 @@
         const electron = require('electron');
         const {ipcRenderer} = electron;
         const passContainer = document.getElementById("passList");
-    
-        ipcRenderer.on('password:add', function(e, username, website, password){
+        
+        ipcRenderer.on('data:add', function(e, store){
+            console.log("data restored?");
+            console.log(store[0])
+            for (var i=0; i < store.length; i++) {
+                createDiv(e,store[i].username, store[i].website, store[i].password);
+                console.log(store[i].username + store[i].website + store[i].password);
+            }
+        });
+
+        ipcRenderer.on('password:add', function(e,username, website, password){
+            createDiv(e, username, website, password);
+        });
+
+        ipcRenderer.on('password:clear', function(){
+            passContainer.innerHTML = '';
+        });
+
+        function createDiv(e, username, website, password){
             //create div that contains ul of username, site, and password
             const div = document.createElement('div');
             div.className = "row";
@@ -38,11 +55,8 @@
             ul.appendChild(passwordLI);
             div.appendChild(ul);
             passContainer.appendChild(div);            
-        });
-
-        ipcRenderer.on('password:clear', function(){
-            passContainer.innerHTML = '';
-        });
+            console.log("div created")
+        }
 
         //Remove Item
         ul.addEventListener('dblclick', removeItem);

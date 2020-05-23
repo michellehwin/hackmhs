@@ -12,12 +12,12 @@ const{app, BrowserWindow, Menu, ipcMain} = electron;
 let mainWindow;
 let addWindow;
 
-const store = new Store({
+var store = new Store({
     configName: 'passwords'
 });
 
 // Listen for app to be ready
-app.on('ready', function(){
+app.on('ready', function () {
     //Create a window
     mainWindow = new BrowserWindow({
         webPreferences: {
@@ -30,6 +30,9 @@ app.on('ready', function(){
         protocol:"file:",
         slashes:true
     }));
+    mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.webContents.send('data:add', store);
+    });
     //Quit app when closed
     mainWindow.on('closed', function () {
         app.quit();
@@ -60,6 +63,7 @@ function createAddWindow() {
     // Garbage collection handle
     addWindow.on('close', function () {
         addWindow = null;
+        mainWindow.webContents.send('data:add', store);
     })
 }
 
@@ -68,7 +72,6 @@ ipcMain.on('password:add', function (e, username, website) {
     //generate pass and send to mainWindow
     const password = generateApprovedPassword(15, 'placeholder', [0, 1, 2]);
     store.add(website, username, password);
-    console.log(store.get(website));
     mainWindow.webContents.send('password:add', username, website, password);
     addWindow.close();
 });
@@ -80,6 +83,7 @@ const mainMenuTemplate = [
     submenu:[
         {
             label: 'Add Password',
+            accelerator: process.platform == 'darwin' ? 'Command + A' : 'Ctrl+A',
             click() {
                 createAddWindow();
             }
