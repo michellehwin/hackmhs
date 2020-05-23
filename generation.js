@@ -109,3 +109,5 @@ function isUpper(c){
 function isLower(c){
 	return (c>=97&&c<=122);
 }
+
+module.exports = generateApprovedPassword;

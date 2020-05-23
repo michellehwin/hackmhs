@@ -1,6 +1,10 @@
 const electron = require('electron');
 const url = require('url');
 const path = require("path");
+const Store = require('./store.js');
+const generateApprovedPassword = require('./generation.js');
+// const keytar = require('keytar')
+
 // SET ENV
 process.env.NODE_ENV = 'development';
 
@@ -8,6 +12,10 @@ const{app, BrowserWindow, Menu, ipcMain} = electron;
 
 let mainWindow;
 let addWindow;
+
+const store = new Store({
+    configName: 'passwords'
+  });
 
 // Listen for app to be ready
 app.on('ready', function(){
@@ -58,9 +66,11 @@ function createAddWindow() {
 
 // Catch password:add
 ipcMain.on('password:add', function (e, username, website) {
-    const password = generate(10, 'qwesdfghjnmkjhgfcvbn');
+    //generate pass and send to mainWindow
+    const password = generateApprovedPassword(15,'placeholder', [0, 1, 2]);
     mainWindow.webContents.send('password:add', username, website, password);
     addWindow.close();
+
 });
 
 //Create menu template
@@ -115,20 +125,4 @@ if (process.env.NODE_ENV !== 'production') {
             ]
         }
     )
-}
-
-function generate(pwLength, charset){
-	
-	pw = "";
-
-	for (var i = pwLength - 1; i >= 0; i--) {
-		charIndex = randomInteger(0,charset.length-1);
-		pw+= charset.charAt(charIndex);
-	}
-
-	return pw;
-}
-
-function randomInteger(min, max){
-	return (min+Math.floor(Math.random()*(max-min+1)));
 }
