@@ -1,22 +1,28 @@
 // TODO
 // - multiple random generators (seeds and such)
+// - mnemonic
+const SeedRandom = require("seedrandom");
 
 charset="QWERTYUIOPASDFGHJKLZXCVBNMmnbvcxzasdfghjklpoiuytrewq!@#$%&*_-?.";
 
-function generate(pwLength){
+//Requires user generated seed for additional entropy. Should have a tooltip explaining this.
+function generate(pwLength, seed){
 	
 	pw = "";
 
 	for (var i = pwLength - 1; i >= 0; i--) {
-		charIndex = randomInteger(0,charset.length-1);
+		charIndex = randomInteger(0,charset.length-1,SeedRandom(seed));
 		pw+= charset.charAt(charIndex);
 	}
 
 	return pw;
 }
 
-function randomInteger(min, max){
-	return (min+Math.floor(Math.random()*(max-min+1)));
+function randomInteger(min, max, rng){
+	x = ""+Math.random();
+	x=x+rng();
+	rngFinal = SeedRandom(x);
+	return (min+Math.floor(rngFinal()*(max-min+1)));
 }
 
 function approvePassword(pw, modes){
@@ -29,10 +35,10 @@ function approvePassword(pw, modes){
 	return true;
 }
 
-function generateApprovedPassword(pwLength, modes){
-	r = generate(pwLength);
+function generateApprovedPassword(pwLength, seed, modes){
+	r = generate(pwLength,seed);
 	while(!approvePassword(r,modes)){
-		r= generate(pwLength);
+		r= generate(pwLength,seed);
 	}
 
 	return r;
@@ -104,3 +110,5 @@ function isUpper(c){
 function isLower(c){
 	return (c>=97&&c<=122);
 }
+
+console.log(generateApprovedPassword(15, "I like to eat icersjhcream ppewpo!!#W Y7i8rfeief",[0,1,2]));
