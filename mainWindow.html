@@ -3,26 +3,44 @@
 <head>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="mainWindow.css">
     <title>Passwords</title>
     
 </head>
 <body>
-    <h1>Passwords</h1>
-    <ul></ul>
+    <div class="container-fluid">
+        <h1>Passwords</h1>
+    </div>
+    <div class="container-fluid" id="passList">
+
+    </div>
     <script>
         const electron = require('electron');
         const {ipcRenderer} = electron;
-        const ul = document.querySelector('ul');
+        const passContainer = document.getElementById("passList");
 
-        ipcRenderer.on('item:add', function(e,item){
-            const li = document.createElement('li');
-            const itemText = document.createTextNode(item);
-            li.appendChild(itemText);
-            ul.appendChild(li);
+        ipcRenderer.on('password:add', function(e, username, website, password){
+            const div = document.createElement('div');
+            div.className = "row";
+            const ul = document.createElement('ul');
+            const usernameText = document.createTextNode("Username: " + username);
+            const websiteText = document.createTextNode("Website: " + website);
+            const passwordText = document.createTextNode("Your password: " + password);
+            const usernameLI = document.createElement("li");
+            const websiteLI = document.createElement("li");
+            const passwordLI = document.createElement("li");
+            usernameLI.appendChild(usernameText);
+            websiteLI.appendChild(websiteText);
+            passwordLI.appendChild(passwordText);
+            ul.appendChild(usernameLI);
+            ul.appendChild(websiteLI);
+            ul.appendChild(passwordLI);
+            div.appendChild(ul);
+            passContainer.appendChild(div);
         });
 
-        ipcRenderer.on('item:clear', function(){
-            ul.innerHTML = '';
+        ipcRenderer.on('password:clear', function(){
+            passContainer.innerHTML = '';
         });
 
         //Remove Item

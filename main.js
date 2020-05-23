@@ -1,7 +1,6 @@
 const electron = require('electron');
 const url = require('url');
 const path = require("path");
-
 // SET ENV
 process.env.NODE_ENV = 'development';
 
@@ -57,9 +56,10 @@ function createAddWindow() {
     })
 }
 
-// Catch item:add
-ipcMain.on('item:add', function (e, item) {
-    mainWindow.webContents.send('item:add', item);
+// Catch password:add
+ipcMain.on('password:add', function (e, username, website) {
+    const password = generate(10, 'qwesdfghjnmkjhgfcvbn');
+    mainWindow.webContents.send('password:add', username, website, password);
     addWindow.close();
 });
 
@@ -77,7 +77,7 @@ const mainMenuTemplate = [
         {
             label: 'Clear Passwords',
             click() {
-                mainWindow.webContents.send('item:clear')
+                mainWindow.webContents.send('password:clear')
             }
         },
         {
@@ -115,4 +115,20 @@ if (process.env.NODE_ENV !== 'production') {
             ]
         }
     )
+}
+
+function generate(pwLength, charset){
+	
+	pw = "";
+
+	for (var i = pwLength - 1; i >= 0; i--) {
+		charIndex = randomInteger(0,charset.length-1);
+		pw+= charset.charAt(charIndex);
+	}
+
+	return pw;
+}
+
+function randomInteger(min, max){
+	return (min+Math.floor(Math.random()*(max-min+1)));
 }

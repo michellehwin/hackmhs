@@ -10,7 +10,7 @@
             <label for="">Account Username/Email</label>
             <input type="text" id="username" autofocus>
             <label for="">Website</label>
-            <input type="url" id="website" autofocus>
+            <input type="text" id="website">
         </div>
         <button type="submit">Generate Password</button>
     </form>
@@ -23,8 +23,9 @@
 
         function submitForm(e){
             e.preventDefault();
-            const item = document.querySelector('#item').value;
-            ipcRenderer.send('item:add', item)
+            const username = document.querySelector('#username').value;
+            const website = document.querySelector('#website').value;
+            ipcRenderer.send('password:add', username, website)
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
