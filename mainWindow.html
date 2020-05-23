@@ -8,7 +8,7 @@
     
 </head>
 <body>
-    <div class="container-fluid" onload="grabPass()">
+    <div class="container-fluid">
         <h1>Passwords</h1>
     </div>
     <div class="container-fluid" id="passList">
@@ -17,26 +17,22 @@
     <script>
         const electron = require('electron');
         const {ipcRenderer} = electron;
+        const Store = require('./store.js');
         const passContainer = document.getElementById("passList");
         
-        ipcRenderer.on('data:add', function(e, store){
-            console.log("data restored?");
-            console.log(store[0])
-            for (var i=0; i < store.length; i++) {
-                createDiv(e,store[i].username, store[i].website, store[i].password);
-                console.log(store[i].username + store[i].website + store[i].password);
-            }
+        var store = new Store({
+            configName: 'passwords'
         });
+
+        dataAdd(store);
+
+        function dataAdd(store){
+            for (var i=0; i < store.arrLength(); i++) {
+                createDiv(store.data[i].username, store.data[i].website, store.data[i].password);
+            }
+        };
 
         ipcRenderer.on('password:add', function(e,username, website, password){
-            createDiv(e, username, website, password);
-        });
-
-        ipcRenderer.on('password:clear', function(){
-            passContainer.innerHTML = '';
-        });
-
-        function createDiv(e, username, website, password){
             //create div that contains ul of username, site, and password
             const div = document.createElement('div');
             div.className = "row";
@@ -55,11 +51,37 @@
             ul.appendChild(passwordLI);
             div.appendChild(ul);
             passContainer.appendChild(div);            
-            console.log("div created")
+            store.add(website, username, password);
+        });
+
+        ipcRenderer.on('password:clear', function(){
+            passContainer.innerHTML = '';
+            store.clear();
+        });
+
+        function createDiv(username, website, password){
+            //create div that contains ul of username, site, and password
+            const div = document.createElement('div');
+            div.className = "row";
+            const ul = document.createElement('ul');
+            const usernameText = document.createTextNode("Username: " + username);
+            const websiteText = document.createTextNode("Website: " + website);
+            const passwordText = document.createTextNode("Your password: " + password);
+            const usernameLI = document.createElement("li");
+            const websiteLI = document.createElement("li");
+            const passwordLI = document.createElement("li");
+            usernameLI.appendChild(usernameText);
+            websiteLI.appendChild(websiteText);
+            passwordLI.appendChild(passwordText);
+            ul.appendChild(usernameLI);
+            ul.appendChild(websiteLI);
+            ul.appendChild(passwordLI);
+            div.appendChild(ul);
+            passContainer.appendChild(div);            
         }
 
-        //Remove Item
-        ul.addEventListener('dblclick', removeItem);
+        //Remove Item FIXTHIS
+        // ul.addEventListener('dblclick', removeItem);
 
         function removeItem(e) {
             e.target.remove();

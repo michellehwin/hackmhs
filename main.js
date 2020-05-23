@@ -1,7 +1,7 @@
 const electron = require('electron');
 const url = require('url');
 const path = require("path");
-const Store = require('./store.js');
+// const Store = require('./store.js');
 const generateApprovedPassword = require('./generation.js');
 
 // SET ENV
@@ -11,10 +11,6 @@ const{app, BrowserWindow, Menu, ipcMain} = electron;
 
 let mainWindow;
 let addWindow;
-
-var store = new Store({
-    configName: 'passwords'
-});
 
 // Listen for app to be ready
 app.on('ready', function () {
@@ -30,9 +26,9 @@ app.on('ready', function () {
         protocol:"file:",
         slashes:true
     }));
-    mainWindow.webContents.on('did-finish-load', () => {
-        mainWindow.webContents.send('data:add', store);
-    });
+    // mainWindow.webContents.on('did-finish-load', () => {
+    //     mainWindow.webContents.send('data:add', store);
+    // });
     //Quit app when closed
     mainWindow.on('closed', function () {
         app.quit();
@@ -71,7 +67,6 @@ function createAddWindow() {
 ipcMain.on('password:add', function (e, username, website) {
     //generate pass and send to mainWindow
     const password = generateApprovedPassword(15, 'placeholder', [0, 1, 2]);
-    store.add(website, username, password);
     mainWindow.webContents.send('password:add', username, website, password);
     addWindow.close();
 });
@@ -83,7 +78,7 @@ const mainMenuTemplate = [
     submenu:[
         {
             label: 'Add Password',
-            accelerator: process.platform == 'darwin' ? 'Command + A' : 'Ctrl+A',
+            accelerator: process.platform == 'darwin' ? 'Command + N' : 'Ctrl+N',
             click() {
                 createAddWindow();
             }

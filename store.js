@@ -10,6 +10,7 @@ class Store {
     // We'll use the `configName` property to set the file name and path.join to bring it all together as a string
     this.path = path.join(userDataPath, opts.configName + '.json');
     this.data = parseDataFile(this.path);
+    
   }
   
   // This will just return the property on the `data` object
@@ -19,15 +20,30 @@ class Store {
             return this.data[i];
         }
     }
-  }
-  
+    }
+    
+    data() {
+        return this.data;
+    }
+
     arrLength() {
         return this.data.length;
-  }
+    }
+    
+    clear() {
+        this.data = {};
+        fs.writeFileSync(this.path, JSON.stringify(this.data));
+    }
   
   // ...and this will add values
+    
   add(site, user, pass) {
-      this.data.push({ website: site, username: user, password: pass });
+      try {
+          this.data.push({ website: site, username: user, password: pass });
+      } catch (error) {
+          console.log("couldn't push data: " + error)
+          this.data = [{ website: site, username: user, password: pass }];
+      }
     fs.writeFileSync(this.path, JSON.stringify(this.data));
   }
 }
@@ -38,7 +54,7 @@ function parseDataFile(filePath) {
   try {
     return JSON.parse(fs.readFileSync(filePath));
   } catch(error) {
-    // if there was some kind of error, return the passed in defaults instead.
+    // if there was some kind of error, return defaults instead.
       return [{website: 'site', username: 'user', password: 'pass'}];
   }
 }
