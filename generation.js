@@ -1,5 +1,4 @@
 // TODO
-// - multiple random generators (seeds and such)
 // - mnemonic
 const SeedRandom = require("seedrandom");
 
@@ -110,5 +109,3 @@ function isUpper(c){
 function isLower(c){
 	return (c>=97&&c<=122);
 }
-
-console.log(generateApprovedPassword(15, "I like to eat icersjhcream ppewpo!!#W Y7i8rfeief",[0,1,2]));
