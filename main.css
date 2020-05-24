@@ -1,0 +1,24 @@
+body {
+    background-color: #f9f7f7;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+h1{
+    font-weight: 700;
+}
+
+.btn-primary {
+    color: white;
+    font-weight: 700;
+    background-color: #112d4e;
+}
+
+#passList .row {
+    background-color: #dbe2ef;
+    border-radius: 20px;
+    border: #112d4e solid 3px;
+}
+
+ul{
+    list-style: none;
+}

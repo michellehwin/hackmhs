@@ -3,16 +3,16 @@
 <head>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="mainWindow.css">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <title>Passwords</title>
     
 </head>
 <body>
-    <div class="container-fluid pt-3">
+    <div class="container-fluid pt-4 text-center">
         <h1>Your Passwords</h1>
     </div>
-    <div class="container-fluid" id="passList">
-
+    <div class="container-fluid pt-1" id="passList">
     </div>
     <script>
         const electron = require('electron');
@@ -43,19 +43,22 @@
         ipcRenderer.on('password:add', function(e,username, website, password){
             //create div that contains ul of username, site, and password
             const div = document.createElement('div');
-            div.className = "row";
+            div.className = "row m-3";
             const ul = document.createElement('ul');
+            ul.className = "pt-3"
             const usernameText = document.createTextNode("Username: " + username);
-            const websiteText = document.createTextNode("Website: " + website);
+            const websiteText = document.createTextNode(website);
             const passwordText = document.createTextNode("Your password: " + password);
             const usernameLI = document.createElement("li");
+            const websiteh3 = document.createElement("h3")
             const websiteLI = document.createElement("li");
             const passwordLI = document.createElement("li");
             usernameLI.appendChild(usernameText);
-            websiteLI.appendChild(websiteText);
+            websiteh3.appendChild(websiteText);
+            websiteLI.appendChild(websiteh3);
             passwordLI.appendChild(passwordText);
-            ul.appendChild(usernameLI);
             ul.appendChild(websiteLI);
+            ul.appendChild(usernameLI);
             ul.appendChild(passwordLI);
             div.appendChild(ul);
             passContainer.appendChild(div);            
@@ -70,19 +73,22 @@
         function createDiv(username, website, password){
             //create div that contains ul of username, site, and password
             const div = document.createElement('div');
-            div.className = "row";
+            div.className = "row m-3";
             const ul = document.createElement('ul');
+            ul.className = "pt-3";
             const usernameText = document.createTextNode("Username: " + username);
-            const websiteText = document.createTextNode("Website: " + website);
+            const websiteText = document.createTextNode(website);
             const passwordText = document.createTextNode("Your password: " + password);
             const usernameLI = document.createElement("li");
+            const websiteh3 = document.createElement("h3");
             const websiteLI = document.createElement("li");
             const passwordLI = document.createElement("li");
             usernameLI.appendChild(usernameText);
-            websiteLI.appendChild(websiteText);
+            websiteh3.appendChild(websiteText);
+            websiteLI.appendChild(websiteh3);
             passwordLI.appendChild(passwordText);
-            ul.appendChild(usernameLI);
             ul.appendChild(websiteLI);
+            ul.appendChild(usernameLI);
             ul.appendChild(passwordLI);
             div.appendChild(ul);
             passContainer.appendChild(div);            
