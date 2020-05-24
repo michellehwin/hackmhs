@@ -26,9 +26,7 @@ app.on('ready', function () {
         protocol:"file:",
         slashes:true
     }));
-    // mainWindow.webContents.on('did-finish-load', () => {
-    //     mainWindow.webContents.send('data:add', store);
-    // });
+
     //Quit app when closed
     mainWindow.on('closed', function () {
         app.quit();
@@ -85,6 +83,8 @@ const mainMenuTemplate = [
         },
         {
             label: 'Clear Passwords',
+
+            accelerator: process.platform == 'darwin' ? 'Command + D' : 'Ctrl+D',
             click() {
                 mainWindow.webContents.send('password:clear')
             }

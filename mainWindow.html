@@ -18,6 +18,7 @@
         const electron = require('electron');
         const {ipcRenderer} = electron;
         const Store = require('./store.js');
+
         const passContainer = document.getElementById("passList");
         
         var store = new Store({
@@ -28,7 +29,15 @@
 
         function dataAdd(store){
             for (var i=0; i < store.arrLength(); i++) {
-                createDiv(store.data[i].username, store.data[i].website, store.data[i].password);
+                createDiv(
+                    store.getData()[i].username,
+                    store.getData()[i].website, 
+                    store.getData()[i].password
+                );
+                console.log("Created div with " +
+                    store.getData()[i].username+
+                    store.getData()[i].website + 
+                    store.getData()[i].password);
             }
         };
 
