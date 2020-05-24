@@ -1,7 +1,6 @@
 const electron = require('electron');
 const url = require('url');
 const path = require("path");
-// const Store = require('./store.js');
 const generateApprovedPassword = require('./generation.js');
 
 // SET ENV
@@ -11,29 +10,45 @@ const{app, BrowserWindow, Menu, ipcMain} = electron;
 
 let mainWindow;
 let addWindow;
+let tutorialWindow;
+let masterpass = '1234';
+let auth = false;
 
 // Listen for app to be ready
 app.on('ready', function () {
-    //Create a window
     mainWindow = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
         }
     });
-    // Load html into window
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'mainWindow.html'),
-        protocol:"file:",
-        slashes:true
+        pathname: path.join(__dirname, 'masterpass.html'),
+        protocol: "file:",
+        slashes: true
     }));
-
-    //Quit app when closed
     mainWindow.on('closed', function () {
         app.quit();
     });
+    //Tutorial
+    if (masterpass == '') {
+        // Running for the first time.
+        tutorialWindow = new BrowserWindow({
+            webPreferences: {
+                nodeIntegration: true
+            }
+        });
+        tutorialWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'tutorial.html'),
+            protocol:"file:",
+            slashes:true
+        }));
+        tutorialWindow.on('close', function () {
+            tutorialWindow = null;
+        })
+    }
+
     //Build menu from template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-    //Insert Menu
     Menu.setApplicationMenu(mainMenu);
 });
 
@@ -61,12 +76,28 @@ function createAddWindow() {
     })
 }
 
-// Catch password:add
 ipcMain.on('password:add', function (e, username, website) {
     //generate pass and send to mainWindow
-    const password = generateApprovedPassword(15, 'placeholder', [0, 1, 2]);
+    const password = generateApprovedPassword(10, 'placeholder', [0, 1, 2]);
     mainWindow.webContents.send('password:add', username, website, password);
     addWindow.close();
+});
+
+ipcMain.on('masterpass:set', function (e, mp) {
+    masterpass = mp;
+    tutorialWindow.close();
+})
+
+ipcMain.on("login", function(e, mp){
+    if (mp == masterpass) {
+        console.log(true);
+        mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'mainWindow.html'),
+            protocol: "file:",
+            slashes: true
+        }));
+        console.log("logged in");
+    }
 });
 
 //Create menu template

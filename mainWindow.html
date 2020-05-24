@@ -8,8 +8,8 @@
     
 </head>
 <body>
-    <div class="container-fluid">
-        <h1>Passwords</h1>
+    <div class="container-fluid pt-3">
+        <h1>Your Passwords</h1>
     </div>
     <div class="container-fluid" id="passList">
 
@@ -20,11 +20,10 @@
         const Store = require('./store.js');
 
         const passContainer = document.getElementById("passList");
-        
-        var store = new Store({
-            configName: 'passwords'
-        });
 
+        var store = new Store({
+        configName: 'passwords'
+        });
         dataAdd(store);
 
         function dataAdd(store){

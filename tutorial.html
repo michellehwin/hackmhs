@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Tutorial</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+      
+    <div class="container">
+        <div class="row">
+            <h1>Welcome to Psonic!</h1>
+            <p>We're here to make remembering your passwords easier! Secure passwords may be long and complicated,
+                but we'll generate some cool mnemonics to help you remember the important ones. Don't worry, they're all stored on
+                your computer in an encrypted format that only you can access! To get started, let's set your master password,
+                be sure to remember this one, as it's the only password we can't remember for you.
+            </p>
+            <!-- TODO: add check password field -->
+            <form>
+                <div class="form-group">
+                  <input type="text" class="form-control" id="masterpass" placeholder="Enter Master Password">
+                  <small id="emailHelp" class="form-text text-muted">Make sure you can remember it!</small>
+                </div>
+                <!-- <div class="form-group">
+                  <input type="password" class="form-control" id="masterpass" placeholder="Password">
+                </div> -->
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </div>
+
+    <script>
+        const electron = require('electron');
+        const {ipcRenderer} = electron;
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', submitForm);
+
+        function submitForm(e){
+            e.preventDefault();
+            const masterpass = document.querySelector('#masterpass').value;
+            ipcRenderer.send('masterpass:set', masterpass)
+        }
+    </script>
+
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
