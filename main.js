@@ -46,10 +46,7 @@ app.on('ready', function () {
             tutorialWindow = null;
         })
     }
-
-    //Build menu from template
-    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-    Menu.setApplicationMenu(mainMenu);
+    Menu.setApplicationMenu(null);
 });
 
 // Handle create add window
@@ -96,6 +93,9 @@ ipcMain.on("login", function(e, mp){
             protocol: "file:",
             slashes: true
         }));
+        //Build menu from template
+        const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+        Menu.setApplicationMenu(mainMenu);
         console.log("logged in");
     }
 });
