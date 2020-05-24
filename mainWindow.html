@@ -9,8 +9,9 @@
     
 </head>
 <body>
-    <div class="container-fluid pt-4 text-center">
-        <h1>Your Passwords</h1>
+    <div class="container-fluid pt-4 position-relative">
+        <h1 class="d-block mx-auto text-center">Your Passwords</h1>
+        <button type="button" id="add-password" class="btn btn-primary float-right mr-4">Add Password</button>
     </div>
     <div class="container-fluid pt-1" id="passList">
     </div>
@@ -19,11 +20,14 @@
         const {ipcRenderer} = electron;
         const Store = require('./store.js');
 
+        document.getElementById("add-password").addEventListener("click", function(){
+            console.log("clicked");
+            ipcRenderer.send("addPasswordWindow:open");
+        })
+
         const passContainer = document.getElementById("passList");
 
-        var store = new Store({
-        configName: 'passwords'
-        });
+        var store = new Store({configName: 'passwords'});
         dataAdd(store);
 
         function dataAdd(store){
@@ -33,10 +37,6 @@
                     store.getData()[i].website, 
                     store.getData()[i].password
                 );
-                console.log("Created div with " +
-                    store.getData()[i].username+
-                    store.getData()[i].website + 
-                    store.getData()[i].password);
             }
         };
 

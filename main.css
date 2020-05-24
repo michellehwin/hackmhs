@@ -13,6 +13,14 @@ h1{
     background-color: #112d4e;
 }
 
+#add-password {
+    border-radius: 10px;
+    font-weight: 700;
+    position: absolute;
+    top: 30px;
+    right: 10px;    
+}
+
 #passList .row {
     background-color: #dbe2ef;
     border-radius: 20px;

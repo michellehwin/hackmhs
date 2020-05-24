@@ -2,18 +2,22 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <title>Add Password</title>
 </head>
 <body>
-    <form>
-        <div class="form-group">
-            <label for="">Account Username/Email</label>
-            <input type="text" id="username" autofocus>
-            <label for="">Website</label>
-            <input type="text" id="website">
-        </div>
-        <button type="submit">Generate Password</button>
-    </form>
+    <div class="container pt-4">
+        <form>
+            <div class="form-group">
+                <label for="">Account Username/Email</label>
+                <input class="form-control mb-3" type="text" id="username" autofocus>
+                <label for="">Website</label>
+                <input class="form-control"type="text" id="website">
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Password</button>
+        </form>
+    </div>
     <script>
         const electron = require('electron');
         const {ipcRenderer} = electron;

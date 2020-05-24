@@ -69,7 +69,9 @@ function createAddWindow() {
     // Garbage collection handle
     addWindow.on('close', function () {
         addWindow = null;
-        mainWindow.webContents.send('data:add', store);
+        try {
+            mainWindow.webContents.send('data:add', store);
+        } catch (error){}
     })
 }
 
@@ -79,6 +81,11 @@ ipcMain.on('password:add', function (e, username, website) {
     mainWindow.webContents.send('password:add', username, website, password);
     addWindow.close();
 });
+
+ipcMain.on("addPasswordWindow:open", function (e) {
+    console.log(true);
+    createAddWindow();
+})
 
 ipcMain.on('masterpass:set', function (e, mp) {
     masterpass = mp;
