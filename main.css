@@ -21,10 +21,14 @@ h1{
     right: 10px;    
 }
 
+.ask-master {
+    padding-top: 25%;
+}
+
 #passList .row {
     background-color: #dbe2ef;
     border-radius: 20px;
-    border: #112d4e solid 3px;
+    border: #112d4e solid 4px;
 }
 
 ul{

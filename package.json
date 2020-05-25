@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/michellehwin/hackmhs.git"
   },
-  "author": "Michelle Nguyen and Ken Myers",
+  "author": "Michelle Nguyen, Ken Myers, Cathy Tran, and Ahmad",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/michellehwin/hackmhs/issues"
@@ -23,6 +23,8 @@
   "dependencies": {
     "crypto-js": "^4.0.0",
     "keytar": "^5.0.0-beta.0",
+    "lodash.clonedeep": "^4.5.0",
+    "number-to-words": "^1.2.4",
     "seedrandom": "^3.0.5"
   }
 }

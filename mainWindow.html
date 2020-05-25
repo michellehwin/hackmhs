@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-    <title>Passwords</title>
+    <title>Psonic</title>
     
 </head>
 <body>
@@ -15,93 +15,7 @@
     </div>
     <div class="container-fluid pt-1" id="passList">
     </div>
-    <script>
-        const electron = require('electron');
-        const {ipcRenderer} = electron;
-        const Store = require('./store.js');
-
-        document.getElementById("add-password").addEventListener("click", function(){
-            console.log("clicked");
-            ipcRenderer.send("addPasswordWindow:open");
-        })
-
-        const passContainer = document.getElementById("passList");
-
-        var store = new Store({configName: 'passwords'});
-        dataAdd(store);
-
-        function dataAdd(store){
-            for (var i=0; i < store.arrLength(); i++) {
-                createDiv(
-                    store.getData()[i].username,
-                    store.getData()[i].website, 
-                    store.getData()[i].password
-                );
-            }
-        };
-
-        ipcRenderer.on('password:add', function(e,username, website, password){
-            //create div that contains ul of username, site, and password
-            const div = document.createElement('div');
-            div.className = "row m-3";
-            const ul = document.createElement('ul');
-            ul.className = "pt-3"
-            const usernameText = document.createTextNode("Username: " + username);
-            const websiteText = document.createTextNode(website);
-            const passwordText = document.createTextNode("Your password: " + password);
-            const usernameLI = document.createElement("li");
-            const websiteh3 = document.createElement("h3")
-            const websiteLI = document.createElement("li");
-            const passwordLI = document.createElement("li");
-            usernameLI.appendChild(usernameText);
-            websiteh3.appendChild(websiteText);
-            websiteLI.appendChild(websiteh3);
-            passwordLI.appendChild(passwordText);
-            ul.appendChild(websiteLI);
-            ul.appendChild(usernameLI);
-            ul.appendChild(passwordLI);
-            div.appendChild(ul);
-            passContainer.appendChild(div);            
-            store.add(website, username, password);
-        });
-
-        ipcRenderer.on('password:clear', function(){
-            passContainer.innerHTML = '';
-            store.clear();
-        });
-
-        function createDiv(username, website, password){
-            //create div that contains ul of username, site, and password
-            const div = document.createElement('div');
-            div.className = "row m-3";
-            const ul = document.createElement('ul');
-            ul.className = "pt-3";
-            const usernameText = document.createTextNode("Username: " + username);
-            const websiteText = document.createTextNode(website);
-            const passwordText = document.createTextNode("Your password: " + password);
-            const usernameLI = document.createElement("li");
-            const websiteh3 = document.createElement("h3");
-            const websiteLI = document.createElement("li");
-            const passwordLI = document.createElement("li");
-            usernameLI.appendChild(usernameText);
-            websiteh3.appendChild(websiteText);
-            websiteLI.appendChild(websiteh3);
-            passwordLI.appendChild(passwordText);
-            ul.appendChild(websiteLI);
-            ul.appendChild(usernameLI);
-            ul.appendChild(passwordLI);
-            div.appendChild(ul);
-            passContainer.appendChild(div);            
-        }
-
-        //Remove Item FIXTHIS
-        // ul.addEventListener('dblclick', removeItem);
-
-        function removeItem(e) {
-            e.target.remove();
-        }
-
-    </script>
+    <script src= "mainWindow.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>   

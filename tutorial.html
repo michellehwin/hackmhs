@@ -5,11 +5,13 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   </head>
   <body>
       
     <div class="container">
-        <div class="row">
+        <div class="row pt-4">
             <h1>Welcome to Psonic!</h1>
             <p>We're here to make remembering your passwords easier! Secure passwords may be long and complicated,
                 but we'll generate some cool mnemonics to help you remember the important ones. Don't worry, they're all stored on
@@ -19,12 +21,16 @@
             <!-- TODO: add check password field -->
             <form>
                 <div class="form-group">
-                  <input type="text" class="form-control" id="masterpass" placeholder="Enter Master Password">
-                  <small id="emailHelp" class="form-text text-muted">Make sure you can remember it!</small>
+                  <input autofocus type="text" class="form-control" id="masterpass" placeholder="Enter Master Password">
+                  <small class="form-text text-muted">Make sure you can remember it!</small>
                 </div>
-                <!-- <div class="form-group">
-                  <input type="password" class="form-control" id="masterpass" placeholder="Password">
-                </div> -->
+                <p>Your passwords will be generated using your own seed to make them more secure,
+                  enter some random characters and numbers atleast 10 in length below.
+                </p>
+                <div class="form-group">
+                  <input type="text" class="form-control" id="seed" placeholder="Enter Random Seed">
+                  <small class="form-text text-muted">Something like this: jdio^&^#2h(Hjf093NUH</small>
+                </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>
         </div>
@@ -40,7 +46,8 @@
         function submitForm(e){
             e.preventDefault();
             const masterpass = document.querySelector('#masterpass').value;
-            ipcRenderer.send('masterpass:set', masterpass)
+            const seed = document.querySelector('#seed').value;
+            ipcRenderer.send('masterpass:set', masterpass, seed);
         }
     </script>
 

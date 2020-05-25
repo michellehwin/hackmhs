@@ -1,6 +1,8 @@
 const electron = require('electron');
 const url = require('url');
 const path = require("path");
+const code = require('./encrypter')
+const fs = require('fs');
 const generateApprovedPassword = require('./generation.js');
 
 // SET ENV
@@ -11,8 +13,8 @@ const{app, BrowserWindow, Menu, ipcMain} = electron;
 let mainWindow;
 let addWindow;
 let tutorialWindow;
-let masterpass = '1234';
-let auth = false;
+let masterpass = '';
+let seed;
 
 // Listen for app to be ready
 app.on('ready', function () {
@@ -22,15 +24,18 @@ app.on('ready', function () {
         }
     });
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'masterpass.html'),
+        pathname: path.join(__dirname, 'mainWindow.html'),
         protocol: "file:",
         slashes: true
     }));
     mainWindow.on('closed', function () {
         app.quit();
-    });
-    //Tutorial
-    if (masterpass == '') {
+	});
+
+	//Tutorial
+    const fileLocation = path.join((electron.app || electron.remote.app).getPath('userData'),'passwords.json');
+	console.log(fileLocation);
+	if (!fs.existsSync(fileLocation)) {
         // Running for the first time.
         tutorialWindow = new BrowserWindow({
             webPreferences: {
@@ -45,8 +50,25 @@ app.on('ready', function () {
         tutorialWindow.on('close', function () {
             tutorialWindow = null;
         })
-    }
-    Menu.setApplicationMenu(null);
+	} else {
+		loginWindow = new BrowserWindow({
+			webPreferences: {
+				nodeIntegration: true
+			}
+		});
+		loginWindow.loadURL(url.format({
+			pathname: path.join(__dirname, 'masterpass.html'),
+			protocol: "file:",
+			slashes: true
+		}));
+		loginWindow.on('close', function () {
+            loginWindow = null;
+        })
+	}
+	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+	Menu.setApplicationMenu(mainMenu);
+
+    // Menu.setApplicationMenu(null);
 });
 
 // Handle create add window
@@ -59,7 +81,7 @@ function createAddWindow() {
         width: 500,
         height: 300,
         title: 'Add Password'
-    });
+	});
     // Load html into window
     addWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addWindow.html'),
@@ -72,39 +94,43 @@ function createAddWindow() {
         try {
             mainWindow.webContents.send('data:add', store);
         } catch (error){}
-    })
+	})
+
 }
 
 ipcMain.on('password:add', function (e, username, website) {
     //generate pass and send to mainWindow
-    const password = generateApprovedPassword(10, 'placeholder', [0, 1, 2]);
+    const password = generateApprovedPassword(10, seed, [0, 1, 2]);
     mainWindow.webContents.send('password:add', username, website, password);
     addWindow.close();
 });
 
 ipcMain.on("addPasswordWindow:open", function (e) {
-    console.log(true);
     createAddWindow();
 })
 
-ipcMain.on('masterpass:set', function (e, mp) {
+ipcMain.on('masterpass:set', function (e, mp, s) {
     masterpass = mp;
+	seed = s;
+	mainWindow.webContents.send("create-JSON", masterpass);
+	console.log("create-JSON request sent to mainWindow");
     tutorialWindow.close();
 })
 
-ipcMain.on("login", function(e, mp){
-    if (mp == masterpass) {
-        console.log(true);
-        mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'mainWindow.html'),
-            protocol: "file:",
-            slashes: true
-        }));
-        //Build menu from template
-        const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-        Menu.setApplicationMenu(mainMenu);
-        console.log("logged in");
+ipcMain.on("login", function (e, mp){
+	mainWindow.webContents.send("request-JSON");
+	console.log("Sent a request for JSON from main.js to mainWindow.html");
+	ipcMain.on("JSON", function (e, store) {
+		console.log("JSON received from mainWindow");
+		console.log(store);
+		if ("START PW LIST" == code.decrypt(store, mp)) {
+			loginWindow.close();
+			console.log("Login Success");
+		//Build menu from template
+		// const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+		// Menu.setApplicationMenu(mainMenu);
     }
+});
 });
 
 //Create menu template
