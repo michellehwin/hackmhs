@@ -21,6 +21,18 @@ h1{
     right: 10px;    
 }
 
+.passRow{
+    position: relative;
+}
+
+.x {
+    width: 20px;
+    height: auto;
+    position: absolute;
+    top:20px;
+    right: 20px;
+}
+
 .ask-master {
     padding-top: 25%;
 }

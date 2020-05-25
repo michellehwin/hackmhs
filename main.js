@@ -112,7 +112,9 @@ ipcMain.on('password:add', function (e, username, website, userSeed) {
 		password = generateApprovedPassword(15, seed.getSeed(), [0, 1, 2, 3]);
 	}
 	const mnemonic = generateMnemonic(password);
-    mainWindow.webContents.send('password:add', username, website, password, mnemonic);
+	console.log("Password generated");
+	mainWindow.webContents.send('password:add', username, website, password, mnemonic);
+	console.log("Sent contents to mainWindow");
     addWindow.close();
 });
 
@@ -123,7 +125,7 @@ ipcMain.on("addPasswordWindow:open", function (e) {
 ipcMain.on('masterpass:set', function (e, mp, s) {
     masterpass = mp;
 	seed = new SimpleStore({configName: "seed", key: mp, seed: s});
-	mainWindow.webContents.send("create-JSON", masterpass, seed);
+	mainWindow.webContents.send("create-JSON", masterpass);
 	console.log("create-JSON request sent to mainWindow");
     tutorialWindow.close();
 })
