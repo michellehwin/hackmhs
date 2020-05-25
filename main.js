@@ -7,7 +7,7 @@ const SimpleStore = require('./simplestore')
 const {generateApprovedPassword, initDictionary, generateMnemonic} = require('./generation.js');
 
 // SET ENV
-process.env.NODE_ENV = 'dev';
+process.env.NODE_ENV = 'production';
 
 const{app, BrowserWindow, Menu, ipcMain} = electron;
 
