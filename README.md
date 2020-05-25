@@ -1,5 +1,5 @@
 # hackmhs
 
-Run npm install <br />
+Run "npm install" <br />
 (Node modules: electron, cryptojs, lodash-clonedeep, numbers-to-words, seedrandom) <br />
-Run npm start to run
+Run "npm start" to run
