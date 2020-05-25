@@ -1,44 +1,46 @@
 const electron = require('electron');
-const {ipcRenderer} = electron;
+const { ipcRenderer } = electron;
 const Store = require('./store.js');
+
 var store;
 
-console.log("Main window loaded");
-store = new Store({ configName: 'passwords'});
-
-ipcRenderer.on("create-JSON", function (e, mp) {
-    console.log("create-JSON request received");
-    store = new Store({ configName: 'passwords', key: mp });
-    console.log("store object created" + store.getData());
-    dataAdd(store);
-});
-
-ipcRenderer.on("request-JSON", function (e) {
-    console.log(store);
-    console.log("Sent JSON to main.js" + store.getCheck());
-    ipcRenderer.send("JSON", store.getCheck());
-});
-
-
-
+const passContainer = document.getElementById("passList");
 document.getElementById("add-password").addEventListener("click", function(){
     ipcRenderer.send("addPasswordWindow:open");
 })
 
-const passContainer = document.getElementById("passList");
+console.log("Main window loaded");
+
+ipcRenderer.on("create-JSON", function (e, mp) {
+    console.log("create-JSON request received");
+    console.log("userinput" + mp);
+    store = new Store({ configName: 'passwords', key: mp });
+    console.log("store object created " + store.getData());
+});
+
+ipcRenderer.on("request-JSON", function (e, mp) {
+    store = new Store({ configName: 'passwords', key: mp });
+    console.log(store);
+    console.log("Sent JSON to main.js:\n" + store.getCheck());
+    ipcRenderer.send("JSON", store.getCheck());
+    dataAdd(store);
+});
+
 
 function dataAdd(store) {
-    console.log(store.arrLength());
-    for (var i=1; i < store.arrLength(); i++) {
+    for (var i=0; i < store.arrLength(); i++) {
         createDiv(
             store.getData()[i].username,
             store.getData()[i].website, 
-            store.getData()[i].password
+            store.getData()[i].password,
+            store.getData()[i].mnemonic
         );
+        console.log("Div created with: " + store.getData()[i].username + " "
+        + store.getData()[i].website + " " + store.getData()[i].password + " " + store.getData()[i].mnemonic);
     }
 };
 
-ipcRenderer.on('password:add', function(e,username, website, password){
+ipcRenderer.on('password:add', function(e,username, website, password, mnemonic){
     //create div that contains ul of username, site, and password
     const div = document.createElement('div');
     div.className = "row m-3";
@@ -47,20 +49,24 @@ ipcRenderer.on('password:add', function(e,username, website, password){
     const usernameText = document.createTextNode("Username: " + username);
     const websiteText = document.createTextNode(website);
     const passwordText = document.createTextNode("Your password: " + password);
+    const mnemonicText = document.createTextNode(mnemonic);
     const usernameLI = document.createElement("li");
     const websiteh3 = document.createElement("h3")
     const websiteLI = document.createElement("li");
+    const mnemonicLI = document.createElement("li");
     const passwordLI = document.createElement("li");
     usernameLI.appendChild(usernameText);
     websiteh3.appendChild(websiteText);
     websiteLI.appendChild(websiteh3);
+    mnemonicLI.appendChild(mnemonicText);
     passwordLI.appendChild(passwordText);
     ul.appendChild(websiteLI);
     ul.appendChild(usernameLI);
     ul.appendChild(passwordLI);
+    ul.appendChild(mnemonicLI);
     div.appendChild(ul);
     passContainer.appendChild(div);            
-    store.add(website, username, password);
+    store.add(website, username, password, mnemonic);
 });
 
 ipcRenderer.on('password:clear', function(){
@@ -68,7 +74,7 @@ ipcRenderer.on('password:clear', function(){
     store.clear();
 });
 
-function createDiv(username, website, password){
+function createDiv(username, website, password, mnemonic){
     //create div that contains ul of username, site, and password
     const div = document.createElement('div');
     div.className = "row m-3";
@@ -77,17 +83,21 @@ function createDiv(username, website, password){
     const usernameText = document.createTextNode("Username: " + username);
     const websiteText = document.createTextNode(website);
     const passwordText = document.createTextNode("Your password: " + password);
+    const mnemonicText = document.createTextNode(mnemonic);
     const usernameLI = document.createElement("li");
-    const websiteh3 = document.createElement("h3");
+    const websiteh3 = document.createElement("h3")
     const websiteLI = document.createElement("li");
+    const mnemonicLI = document.createElement("li");
     const passwordLI = document.createElement("li");
     usernameLI.appendChild(usernameText);
     websiteh3.appendChild(websiteText);
     websiteLI.appendChild(websiteh3);
+    mnemonicLI.appendChild(mnemonicText);
     passwordLI.appendChild(passwordText);
     ul.appendChild(websiteLI);
     ul.appendChild(usernameLI);
     ul.appendChild(passwordLI);
+    ul.appendChild(mnemonicLI);
     div.appendChild(ul);
     passContainer.appendChild(div);            
 }

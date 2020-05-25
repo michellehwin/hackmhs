@@ -1,9 +1,13 @@
 const electron = require('electron');
 const url = require('url');
 const path = require("path");
-const code = require('./encrypter')
+const { code, code2, code3 } = require('./encrypter')
 const fs = require('fs');
-const generateApprovedPassword = require('./generation.js');
+const {generateApprovedPassword, initDictionary, generateMnemonic} = require('./generation.js');
+
+var test = code.encrypt("START PW LIST", "1");
+console.log(test);
+console.log(code.decrypt("U2FsdGVkX18H3CigDuSLgK820vylWM/KHRarqXYCOqc=","1"));
 
 // SET ENV
 process.env.NODE_ENV = 'development';
@@ -18,20 +22,19 @@ let seed;
 
 // Listen for app to be ready
 app.on('ready', function () {
-    mainWindow = new BrowserWindow({
-        webPreferences: {
-            nodeIntegration: true
-        }
-    });
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'mainWindow.html'),
-        protocol: "file:",
-        slashes: true
-    }));
-    mainWindow.on('closed', function () {
-        app.quit();
+	mainWindow = new BrowserWindow({
+		webPreferences: {
+			nodeIntegration: true
+		}
 	});
-
+	mainWindow.loadURL(url.format({
+		pathname: path.join(__dirname, 'mainWindow.html'),
+		protocol: "file:",
+		slashes: true
+	}));
+	mainWindow.on('closed', function () {
+		app.quit();
+	});
 	//Tutorial
     const fileLocation = path.join((electron.app || electron.remote.app).getPath('userData'),'passwords.json');
 	console.log(fileLocation);
@@ -99,9 +102,11 @@ function createAddWindow() {
 }
 
 ipcMain.on('password:add', function (e, username, website) {
-    //generate pass and send to mainWindow
-    const password = generateApprovedPassword(10, seed, [0, 1, 2]);
-    mainWindow.webContents.send('password:add', username, website, password);
+	//generate pass and send to mainWindow
+	initDictionary();
+	const password = generateApprovedPassword(10, seed, [0, 1, 2]);
+	const mnemonic = generateMnemonic(password);
+    mainWindow.webContents.send('password:add', username, website, password, mnemonic);
     addWindow.close();
 });
 
@@ -118,19 +123,20 @@ ipcMain.on('masterpass:set', function (e, mp, s) {
 })
 
 ipcMain.on("login", function (e, mp){
-	mainWindow.webContents.send("request-JSON");
+	mainWindow.webContents.send("request-JSON", mp);
 	console.log("Sent a request for JSON from main.js to mainWindow.html");
 	ipcMain.on("JSON", function (e, store) {
 		console.log("JSON received from mainWindow");
-		console.log(store);
-		if ("START PW LIST" == code.decrypt(store, mp)) {
+		console.log("String to decrypt: " + store + "\npassword entered: " +
+			mp + "\ndecrypt attempt:\n" + code.decrypt(store, mp));
+		if ("START PW LIST" == code2.decrypt(store, mp)) {
 			loginWindow.close();
 			console.log("Login Success");
 		//Build menu from template
 		// const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
 		// Menu.setApplicationMenu(mainMenu);
-    }
-});
+    	}
+	});
 });
 
 //Create menu template

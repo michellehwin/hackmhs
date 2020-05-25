@@ -468,16 +468,18 @@ function distCompare(x,y,z){
 	return Math.sign(xdist-ydist);
 }
 
-initDictionary();
+// initDictionary();
 
-for (var i = 0; i < 25; i++) {
-	x = generateApprovedPassword(15,"asjdhgfjksadhgfj",[0,1,2,3]);
-	console.log("password\n----\n"+x+"\n----\nend password");
-	console.log("mnem\n---\n"+generateMnemonic(x)+"\n---\nend M")
-}
+// for (var i = 0; i < 25; i++) {
+// 	x = generateApprovedPassword(15,"asjdhgfjksadhgfj",[0,1,2,3]);
+// 	console.log("password\n----\n"+x+"\n----\nend password");
+// 	console.log("mnem\n---\n"+generateMnemonic(x)+"\n---\nend M")
+// }
 
 // console.log(generateMnemonic("cd2&SK0bes"))
 
 //6yEi2HWMIo?!KaH double punctaution craps out
 //YIfgMtyY!3&q0be no verb in seconcd sentence, "three and"
 //5Ofyhn6&AqAAqg! "five and"
+
+module.exports = { generateApprovedPassword, initDictionary, generateMnemonic };

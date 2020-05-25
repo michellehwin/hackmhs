@@ -1,8 +1,7 @@
 const electron = require('electron');
 const path = require('path');
 const fs = require('fs');
-const code = require('./encrypter');
-const CryptoJS = require("crypto-js");
+const {code, code2} = require('./encrypter');
 
 class Store {
   constructor(opts) {
@@ -12,12 +11,11 @@ class Store {
     // We'll use the `configName` property to set the file name and path.join to bring it all together as a string
     this.path = path.join(userDataPath, opts.configName + '.json');
     this.data = parseDataFile(this.path, opts.key);
-	  this.key = opts.key;
-	  console.log(this.data);
+	this.key = opts.key;
+	console.log(this.data);
   }
   
   getCheck(){
-	  console.log(this.data[0].item);
       return this.data[0].item;
   }
   // This will just return the properties on the `data` object
@@ -27,29 +25,30 @@ class Store {
       dataArr.push({
           website: this.data[i].website,
           username: this.data[i].username,
-          password: code.decrypt(this.data[i].password, this.key)
+		  password: code2.decrypt(this.data[i].password, this.key),
+		  mnemonic: code2.decrypt(this.data[i].mnemonic, this.key)
     	});
     }
     return dataArr;
   }
 
 	arrLength() {
-		console.log(this.data);
         return this.data.length;
     }
     
     clear() {
-        this.data = [{"item": "START PASSWORD LIST"}];
+        this.data = [{"item": this.data[0].item}];
         fs.writeFileSync(this.path, JSON.stringify(this.data));
     }
   
   // ...and this will add values
-    add(site, user, pass) {
+    add(site, user, pass, mnemonic) {
       try {          
           this.data.push({
               website: site,
               username: user,
-              password: code.encrypt(pass, this.key)
+			  password: code.encrypt(pass, this.key),
+			  mnemonic: code.encrypt(mnemonic, this.key)
           });
       } catch (error) {
           console.log("couldn't push data:\n" + error)
@@ -73,9 +72,10 @@ function parseDataFile(filePath, userKey) {
   } catch(error) {
     // if there was some kind of error, return defaults instead.
 		console.log("Could not parse existing JSON file\n" + error);
+		console.log("user input: " + userKey);
 		let first = code.encrypt("START PW LIST", userKey);
 		console.log(first);
-	    fs.writeFileSync(filePath, JSON.stringify([{ item: first}]));
+	    fs.writeFileSync(filePath, JSON.stringify([{item: first}]));
         console.log("New JSON file created");
         return JSON.parse(fs.readFileSync(filePath));
   }
