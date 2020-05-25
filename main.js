@@ -37,7 +37,8 @@ app.on('ready', function () {
 		require('electron').shell.openExternal(url);
 	});
 	//Tutorial
-    const fileLocation = path.join((electron.app || electron.remote.app).getPath('userData'),'passwords.json');
+	const fileLocation = path.join((electron.app || electron.remote.app).getPath('userData'), 'passwords.json');
+	console.log(fileLocation);
 	if (!fs.existsSync(fileLocation)) {
         // Running for the first time.
         tutorialWindow = new BrowserWindow({
@@ -128,7 +129,10 @@ ipcMain.on('masterpass:set', function (e, mp, s) {
     masterpass = mp;
 	seed = new SimpleStore({configName: "seed", key: mp, seed: s});
 	mainWindow.webContents.send("create-JSON", masterpass);
-    tutorialWindow.close();
+	tutorialWindow.close();
+	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+	Menu.setApplicationMenu(mainMenu);
+
 })
 
 ipcMain.on("login", function (e, mp){
