@@ -57,7 +57,7 @@ function createDiv(username, website, password, mnemonic){
     const div = document.createElement('div');
     div.className = "passRow row m-3";
     const ul = document.createElement('ul');
-    ul.className = "pt-3";
+    ul.className = "pt-3 pl-4 mr-1";
     const usernameText = document.createTextNode("Username: " + username);
     const websiteText = document.createTextNode(website);
     const passwordText = document.createTextNode("Your password: " + password);
