@@ -15,9 +15,11 @@
                 <label for="">Website</label>
                 <input class="form-control form-control-sm mb-3"type="text" id="website">
                 <label for="">Seed (optional)</label>
-                <input class="form-control form-control-sm" type="text" id="seed">
+                <input class="form-control form-control-sm mb-3" type="text" id="seed">
+                <label for="">Password (optional)</label>
+                <input class="form-control form-control-sm" type="password" id="password">
             </div>
-            <button type="submit" class="btn btn-primary">Generate Password</button>
+            <button type="submit" class="btn btn-primary">Generate Mnemonic</button>
         </form>
     </div>
     <script>
@@ -32,7 +34,13 @@
             const username = document.querySelector('#username').value;
             const website = document.querySelector('#website').value;
             const seed = document.querySelector('#seed').value;
-            ipcRenderer.send('password:add', username, website, seed)
+            var password = document.getElementById("password");
+            if (password !== null && password.value === "") {
+                password = '';
+            } else {
+                password = password.value;
+            }
+            ipcRenderer.send('password:add', username, website, seed,password)
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

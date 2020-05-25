@@ -6,12 +6,8 @@ const fs = require('fs');
 const SimpleStore = require('./simplestore')
 const {generateApprovedPassword, initDictionary, generateMnemonic} = require('./generation.js');
 
-var test = code.encrypt("START PW LIST", "1");
-console.log(test);
-console.log(code.decrypt("U2FsdGVkX18H3CigDuSLgK820vylWM/KHRarqXYCOqc=","1"));
-
 // SET ENV
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
 
 const{app, BrowserWindow, Menu, ipcMain} = electron;
 
@@ -69,10 +65,8 @@ app.on('ready', function () {
             loginWindow = null;
         })
 	}
-	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-	Menu.setApplicationMenu(mainMenu);
 
-    // Menu.setApplicationMenu(null);
+    Menu.setApplicationMenu(null);
 });
 
 // Handle create add window
@@ -102,16 +96,23 @@ function createAddWindow() {
 
 }
 
-ipcMain.on('password:add', function (e, username, website, userSeed) {
+ipcMain.on('password:add', function (e, username, website, userSeed, userPass) {
 	//generate pass and send to mainWindow
 	initDictionary();
 	let password;
-	if (userSeed !== null) {
-		password = generateApprovedPassword(15, userSeed, [0, 1, 2, 3]);
+	if (userPass == '') { 
+		if (userSeed !== null) {
+			password = generateApprovedPassword(15, userSeed, [0, 1, 2, 3]);
+		} else {
+			password = generateApprovedPassword(15, seed.getSeed(), [0, 1, 2, 3]);
+			}
 	} else {
-		password = generateApprovedPassword(15, seed.getSeed(), [0, 1, 2, 3]);
+		password = userPass;
 	}
 	const mnemonic = generateMnemonic(password);
+	if (mnemonic == -1) {
+		mnemonic = '';
+	}
 	console.log("Password generated");
 	mainWindow.webContents.send('password:add', username, website, password, mnemonic);
 	console.log("Sent contents to mainWindow");
@@ -140,9 +141,9 @@ ipcMain.on("login", function (e, mp){
 		if ("START PW LIST" == code2.decrypt(store, mp)) {
 			loginWindow.close();
 			console.log("Login Success");
-		//Build menu from template
-		// const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-		// Menu.setApplicationMenu(mainMenu);
+		// Build menu from template
+		const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+		Menu.setApplicationMenu(mainMenu);
     	}
 	});
 });
