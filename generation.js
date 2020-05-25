@@ -1,11 +1,9 @@
 // TODO
-// - conjuntions
+// - conjunctions
 // - adverbs
-// - singular nouns
-// - discourage too many adjectives? (shorter sentences)
+// - discourage too many adjectives? (shorter sentences)?
 // - proper adjectives must come last?
 // - discourage repeats.
-// - allow numbers at the end?
 
 const SeedRandom = require("seedrandom");
 const deepclone = require("lodash.clonedeep");
@@ -13,9 +11,9 @@ const converter = require('number-to-words');
 
 const charset="QWERTYUIOPASDFGHJKLZXCVBNMmnbvcxzasdfghjklpoiuytrewq!@&?.1234567890";
 
-const nouns = ["armies","animals","aircrafts","adults","bodies","banks","beds","boys","cats","countries","companies","children","dogs","dads","doors","documents","economies","eyes","engines","eagles","families","faces","feathers","friends","generals","gentlemen","gardens","geese","houses","heads","hands ","horses","islands","individuals","infants","judges","jaguars","jellies","kings","keys","kitchens","kittens","ladies","libraries","legs","lakes","men","monkeys","mothers","ministers","neighbors","newspapers","nations","officers","otters","owls","people","papers","presidents","plants","queens","quails","quarterbacks","reporters","rivers","radios","schools","snakes","sons","sisters","tigers","teachers","trains","tarantulas","uncles","universities","unicorns","visitors","vans","villagers","vampires","wives","windows","writers","wombats","xylophones","xrays","youth","yetis","zebras","zombies","zippers","Audis","Alexanders","Austrians","Bandaids","Billies","Bentleys","Corvettes","Christophers","Christians","Daniels","Danes","Doritos","Englishmen","Ezekiels","Esthers","Fords","Franklins","Frigidaires","Gavins","Grammys","Gorbachevs","Harleys","Hamburglers","Henrys","Infinitis","Ivans","Inuits","Jerrys","Jordans","Jeeps","Kias","Kevins","Kennedys","Lincolns","Lamborghinis","Lauras","Michaels","Mercedes","Mormons","Nissans","Nancys","Napoleans","Oscars","Oldsmobiles","Ottomans","Pringles","Patricks","Pontiacs","Quakers","Quincys","Quintons","Rasheeds","Rolexes","Rambos","Supermen","Saturns","Subarus","Teslas","Teddies","Toyotas","Ubers","Ursulas","Ursas","Umas","Vickys","Volkswagens","Voltaires","Wendys","Walkmans","Wilfreds","Xterras","Xaviers","Xenos","Yodas","Yamahas","Yankees","Zacharys","Zippos","Zeldas"];
+const nouns = ["armies","animals","aircrafts","adults","bodies","banks","beds","boys","cats","countries","companies","children","dogs","dads","doors","documents","economies","eyes","engines","eagles","families","faces","feathers","friends","generals","gentlemen","gardens","geese","houses","heads","hands","horses","islands","individuals","infants","judges","jaguars","jellies","kings","keys","kitchens","kittens","ladies","libraries","legs","lakes","men","monkeys","mothers","ministers","neighbors","newspapers","nations","officers","otters","owls","people","papers","presidents","plants","queens","quails","quarterbacks","reporters","rivers","radios","schools","snakes","sons","sisters","tigers","teachers","trains","tarantulas","uncles","universities","unicorns","visitors","vans","villagers","vampires","wives","windows","writers","wombats","xylophones","xrays","youths","yetis","zebras","zombies","zippers","Audis","Alexanders","Austrians","Bandaids","Billies","Bentleys","Corvettes","Christophers","Christians","Daniels","Danes","Doritos","Englishmen","Ezekiels","Esthers","Fords","Franklins","Frigidaires","Gavins","Grammys","Gorbachevs","Harleys","Hamburglars","Henrys","Infinitis","Ivans","Inuits","Jerrys","Jordans","Jeeps","Kias","Kevins","Kennedys","Lincolns","Lamborghinis","Lauras","Michaels","Mercedes","Mormons","Nissans","Nancys","Napoleans","Oscars","Oldsmobiles","Ottomans","Pringles","Patricks","Pontiacs","Quakers","Quincys","Quintons","Rasheeds","Rolexes","Rambos","Supermen","Saturns","Subarus","Teslas","Teddies","Toyotas","Ubers","Ursulas","Ursas","Umas","Vickys","Volkswagens","Voltaires","Wendys","Walkmans","Wilfreds","Xterras","Xaviers","Xenos","Yodas","Yamahas","Yankees","Zacharys","Zippos","Zeldas"];
 const adjectives = ["acidic","acrobatic","admirable","bouncy","bad","big","crying","calm","crazy","dangerous","dastardly","dumb","excellent","evil","energetic","funny","friendly","furry","great","green","gross","handsome","heavy","happy","iconic","imaginary","joyful","jittery","jumping","kind","knowledgeable","knavish","large","luscious","lanky","mighty","magic","magnificent","noble","nosy","nimble","oily","old","optimistic","princely","pretty","pleasant","quick","quarrelsome","quirky","rabid","rambunctious","rebellious","stinky","slimy","silly","tiny","teal","thankful","unbearable","upset","untamable","velvety","vegetarian","verbose","warm","wasteful","weak","xenophobic","xenial","xenogenic","yellow","young","yelping","zippy","zesty","zealous","Australian","Argentinan","Arctic","Basque","Bolivian","Bermudan","Caribbean","Cuban","Catalonian","Danish","Dravidian","Draconian","English","Elizabethan","Estonian","Finnish","Fijian","French","Frankish","Ganymedian","Guatemalan","Greek","Haitian","Hellenic","Hungarian","Indian","Indonesian","Irish","Jovian","Jamaican","Japanese","Kenyan","Korean","Kurdish","Lebanese","Lithuanian","Latvian","Mexican","Marxist","Machiavellian","Nigerian","Norwegian","Nicaraguan","Orcish","Orwellian","Ottoman","Peruvian","Polynesian","Polish","Qatari","Queensland","Québécois","Russian","Romanian","Rhodesian","Saturnian","Sudanese","Siberian","Turkish","Thai","Tanzanian","Ugandan","Uzbek","Ukrainian","Venetian","Venezuelan","Victorian","Welsh","Wiccan","Wakandan","Xhosan","Xerxian","Xanthian","Yiddish","Yemeni","Yorkish","Zimbabwean","Zambian","Zootopian"];
-const verbs = ["attack","assault","answer","berate","beware","block","create","call","choke","deny","defeat","discover","eat","elect","employ","fight","favor","feed","goad","grab","generate","hate","haunt","help","idolize","imagine","impress","jinx","judge","justify","know","keep","kill","like","lick","label","make","mourn","marry","nag","nationalize","neutralize","observe","offend","obliterate","pay","pass","paint","quash","quantify","quiz","ravage","repair","replace","see","scrub","select","tackle","target","teach","understand","undermine","usurp","vindicate","vandalize","vanquish","warn","whack","wheedle","yank","yoke","yield","zap","zest","zip"];
+const verbs = ["attack","assault","answer","berate","beat","block","create","call","choke","deny","defeat","discover","eat","elect","employ","fight","favor","feed","goad","grab","generate","hate","haunt","help","idolize","imagine","impress","jinx","judge","justify","know","keep","kill","like","lick","label","make","mourn","marry","nag","nationalize","neutralize","observe","offend","obliterate","pay","pass","paint","quash","quantify","quiz","ravage","repair","replace","see","scrub","select","tackle","target","teach","understand","undermine","usurp","vindicate","vandalize","vanquish","warn","whack","wheedle","yank","yoke","yield","zap","zest","zip"];
 const atplaces = ["at armories","at bars","at church","at diners","at events","at firehouses","at gardens","at home","at infirmaries","at jails","at kindergartens","at lakes","at malls","at nightclubs","at offices","at pharmacies","at quarries","at railways","at school","at theaters","at unveilings","at villas","at weddings","at yachts","at zones"];
 const atverbs = ["aim at","bat at","cry at","dive at","erupt at","flaunt","gripe at","harp at","itch at","jump at","kick at","look at","marvel at","neg at","ogle at","punch at","quack at","run at","stare at","tap at","unsheathe at","vomit at","wail at","yawn at","zoom at"];
 const numbersuffixes = ["armed","brained","chinned","dimensional","eared","faced","geared","headed","ingredient","jawed","kneed","legged","mouthed","nosed","orificed","pointed","quilled","ribbed","sided","toed","uddered","vertex","winged","yard","zoned"];
@@ -23,16 +21,19 @@ const verbsX = ["explode","excommunicate","excavate"];
 const atplacesX = ["at excavations"];
 const atverbsX = ["exclaim at"];
 const numbersuffixesX = ["extremitied"];
+
 nMap = new Map();
 aMap = new Map();
 vMap = new Map();
 apMap = new Map();
 nsMap = new Map();
+snMap = new Map();
+svMap = new Map();
 masterDict = new Map();
 
 function initDictionary(){
-	fullMaps=[nMap, aMap, apMap];
-	lowerMaps=[vMap, nsMap];
+	fullMaps=[nMap, aMap, apMap,snMap];
+	lowerMaps=[vMap, nsMap, svMap];
 	lowerAlphabet="abcdefghijklmnopqrstuvwxyz";
 	fullAlphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"+lowerAlphabet;
 	for (var i = 0; i < fullMaps.length; i++) {
@@ -50,7 +51,26 @@ function initDictionary(){
 	}
 	for (var i = 0; i < nouns.length; i++) {
 		tmp = nouns[i];
-		nMap.get(""+tmp.charAt(0)).push(tmp);
+		char = ""+tmp.charAt(0);
+		if(tmp=="Mercedes")
+			snMap.get(char).push(tmp);
+		else if (tmp =="zombies")
+			snMap.get(char).push("zombie");
+		else if(tmp == "Rolexes")
+			snMap.get(char).push("Rolex");
+		else if(tmp.match(/ies$/))
+			snMap.get(char).push(tmp.substring(0,tmp.length-3)+"y");
+		else if (tmp.match(/s$/))
+			snMap.get(char).push(tmp.substring(0,tmp.length-1));
+		else if (tmp.match(/men$/))
+			snMap.get(char).push(tmp.substring(0,tmp.length-2)+"an");
+		else if (tmp=="children")
+			snMap.get(char).push("child");
+		else if (tmp=="geese")
+			snMap.get(char).push("goose");
+		else if (tmp=="people")
+			snMap.get(char).push("person");
+		nMap.get(char).push(tmp);
 	}
 	for (var i = 0; i < adjectives.length; i++) {
 		tmp = adjectives[i];
@@ -58,7 +78,16 @@ function initDictionary(){
 	}
 	for (var i = 0; i < verbs.length; i++) {
 		tmp = verbs[i];
-		vMap.get(""+tmp.charAt(0)).push(tmp);
+		char = ""+tmp.charAt(0);
+		if (tmp.match(/y$/) && tmp!="employ")
+			svMap.get(char).push(tmp.substring(0,tmp.length-1)+"ies");
+		else if(["jinx","pass","quash","vanquish","teach"].includes(tmp))
+			svMap.get(char).push(tmp+"es");
+		else if(tmp=="quiz")
+			svMap.get(char).push("quizzes");
+		else
+			svMap.get(char).push(tmp+"s");
+		vMap.get(char).push(tmp);
 	}
 	for (var i = 0; i < atplaces.length; i++) {
 		tmp = atplaces[i];
@@ -269,15 +298,12 @@ function generateMnemonic(pw){
 	postSentences = [];
 	for (var si =0; si<sentences.length;si++){
 		s=sentences[si];
-		// console.log(s)
 		if(s==''){
 			continue;
 		}
 
 		possibleVerbIndices=[];
 
-		// typesInit=types.slice();
-		// unitsInit=units.slice();
 		typesInit = [];
 		unitsInit = deepclone(s.split(''));
 		for (var i = 0; i < unitsInit.length; i++) {
@@ -327,12 +353,21 @@ function generateMnemonic(pw){
 			}
 
 			function tryFormSentence(xxx){
-				// console.log(xxx)
 				if(xxx[0]!=-1){
 					try{
+						singleClause=false;
 						final = [];
 						for (var i = 0; i < units.length; i++) {
-							final.push(getWord(units[i],types[i]));
+							toPush = getWord(units[i],types[i]);
+							if(types[i-1]=="verb"){
+								singleClause=false;
+							}
+							if(units[i]=="1"){
+								singleClause=true;
+							}
+
+							toPush=getWord(units[i],types[i],singleClause);
+							final.push(toPush);
 						}
 						postSentences.push(final.join(" "));
 						return 1;
@@ -340,7 +375,7 @@ function generateMnemonic(pw){
 						return [-1,e];
 					}
 				}return -1;	
-				function getWord(small,type){
+				function getWord(small,type, single=false){
 					//big & furry
 					if(small.includes("&")){
 						return small.split("&").map(x=>getWord(x,type)).join(" and ");
@@ -358,7 +393,14 @@ function generateMnemonic(pw){
 					else if(small.match(/^[0-9]+[a-z]$/)&&type=="adjective"){
 						array=nsMap.get(""+small.charAt(small.length-1));
 						return (converter.toWords(small.substring(0,small.length-1)))+"-"+(array[Math.floor(Math.random() * array.length)]);
-					}else{
+					}else if(single&&type=="noun"){
+						array = snMap.get(""+small.charAt(0));
+						return array[Math.floor(Math.random() * array.length)];
+					}else if(single&&type=="verb"){
+						array = svMap.get(""+small.charAt(0));
+						return array[Math.floor(Math.random() * array.length)];
+					}
+					else{
 						dict=masterDict.get(type);
 						array=dict.get(small);
 						return array[Math.floor(Math.random() * array.length)];
@@ -367,7 +409,6 @@ function generateMnemonic(pw){
 			}
 
 			function tryGenerateLists(verbIndex){
-				// console.log(verbIndex)
 				types[verbIndex]="verb";			
 
 				//Number/@ Pair handling
@@ -409,9 +450,7 @@ function generateMnemonic(pw){
 				if(!trySetType(l,"noun")){
 					return [-1,4];
 				}
-				// console.log(types);
 				//typesetting each unit
-				// console.log("L - " + l)
 				for (var i = l-1; i >= 0; i--) {
 					if(units[i]=="&"){
 						if((units[i-1]!=undefined&&units[i-1].match(/^[0-9]$/))||(!trySetType(i-1, types[i+1]))){
@@ -428,9 +467,6 @@ function generateMnemonic(pw){
 							return [-1,7];
 						}
 					}
-					// console.log("i="+i)
-					// console.log(types)
-					// console.log(units)
 				}
 				function removeElement(index,length){
 					if(index<=verbIndex){
@@ -457,18 +493,12 @@ function generateMnemonic(pw){
 
 	mnemonic="";
 
-	// console.log(postSentences)
-	// console.log(punc)
 	if(postSentences.length==0){
 		return -1;
 	}
 	for (var i = 0; i < postSentences.length; i++) {
 		mnemonic+=postSentences[i]+(i<punc.length ? punc[i] : "")+" ";
 	}
-	// mnemonic=mnemonic.trim();
-	// if(punc.length>postSentences.length){
-	// 	mnemonic+=punc[punc.length-1];
-	// }
 
 	return mnemonic.trim();
 
