@@ -7,21 +7,18 @@ var store;
 const passContainer = document.getElementById("passList");
 document.getElementById("add-password").addEventListener("click", function(){
     ipcRenderer.send("addPasswordWindow:open");
+    document.getElementById("add-password").disabled = true;
 })
 
-console.log("Main window loaded");
 
 ipcRenderer.on("create-JSON", function (e, mp, s) {
-    console.log("create-JSON request received");
-    console.log("userinput" + mp);
-    store = new Store({ configName: 'passwords', key: mp, seed: s});
-    console.log("store object created " + store.getData());
+    store = new Store({ configName: 'passwords', key: mp, seed: s });
+    document.getElementById("add-password").disabled = false;
 });
 
 ipcRenderer.on("request-JSON", function (e, mp) {
     store = new Store({ configName: 'passwords', key: mp });
-    console.log(store);
-    console.log("Sent JSON to main.js:\n" + store.getCheck());
+    document.getElementById("add-password").disabled = false;
     ipcRenderer.send("JSON", store.getCheck());
     dataAdd(store);
 });
@@ -35,16 +32,15 @@ function dataAdd(store) {
             store.getData()[i].password,
             store.getData()[i].mnemonic
         );
-        console.log("Div created with: " + store.getData()[i].username + " "
-        + store.getData()[i].website + " " + store.getData()[i].password + " " + store.getData()[i].mnemonic);
     }
 };
 
 ipcRenderer.on('password:add', function(e,username, website, password, mnemonic){
     //create div that contains ul of username, site, and password
-    console.log("Received password:add from main.js");
+    document.getElementById("add-password").disabled = false;
     createDiv(username, website, password, mnemonic);
     store.add(website, username, password, mnemonic);
+
 });
 
 ipcRenderer.on('password:clear', function(){
@@ -57,7 +53,7 @@ function createDiv(username, website, password, mnemonic){
     const div = document.createElement('div');
     div.className = "passRow row m-3";
     const ul = document.createElement('ul');
-    ul.className = "pt-3 pl-4 mr-1";
+    ul.className = "pt-3 pl-4 mr-2";
     const usernameText = document.createTextNode("Username: " + username);
     const websiteText = document.createTextNode(website);
     const passwordText = document.createTextNode("Your password: " + password);
