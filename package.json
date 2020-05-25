@@ -21,11 +21,11 @@
   },
   "homepage": "https://github.com/michellehwin/hackmhs#readme",
   "devDependencies": {
-    "electron": "^9.0.0",
     "electron-packager": "^14.2.1",
     "electron-rebuild": "^1.11.0"
   },
   "dependencies": {
+    "electron": "^9.0.0",
     "crypto-js": "^4.0.0",
     "keytar": "^5.0.0-beta.0",
     "lodash.clonedeep": "^4.5.0",
