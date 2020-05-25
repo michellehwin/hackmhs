@@ -34,7 +34,6 @@ app.on('ready', function () {
 	});
 	//Tutorial
     const fileLocation = path.join((electron.app || electron.remote.app).getPath('userData'),'passwords.json');
-	console.log(fileLocation);
 	if (!fs.existsSync(fileLocation)) {
         // Running for the first time.
         tutorialWindow = new BrowserWindow({
@@ -113,9 +112,7 @@ ipcMain.on('password:add', function (e, username, website, userSeed, userPass) {
 	if (mnemonic == -1) {
 		mnemonic = '';
 	}
-	console.log("Password generated");
 	mainWindow.webContents.send('password:add', username, website, password, mnemonic);
-	console.log("Sent contents to mainWindow");
     addWindow.close();
 });
 
@@ -127,20 +124,14 @@ ipcMain.on('masterpass:set', function (e, mp, s) {
     masterpass = mp;
 	seed = new SimpleStore({configName: "seed", key: mp, seed: s});
 	mainWindow.webContents.send("create-JSON", masterpass);
-	console.log("create-JSON request sent to mainWindow");
     tutorialWindow.close();
 })
 
 ipcMain.on("login", function (e, mp){
 	mainWindow.webContents.send("request-JSON", mp);
-	console.log("Sent a request for JSON from main.js to mainWindow.html");
 	ipcMain.on("JSON", function (e, store) {
-		console.log("JSON received from mainWindow");
-		console.log("String to decrypt: " + store + "\npassword entered: " +
-			mp + "\ndecrypt attempt:\n" + code.decrypt(store, mp));
 		if ("START PW LIST" == code2.decrypt(store, mp)) {
 			loginWindow.close();
-			console.log("Login Success");
 		// Build menu from template
 		const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
 		Menu.setApplicationMenu(mainMenu);

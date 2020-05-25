@@ -13,7 +13,6 @@ class SimpleStore {
     this.data = parseDataFile(this.path, opts.key, opts.seed);
 	this.key = opts.key;
 	this.seed = opts.seed;
-	console.log(this.data);
     }
     
     getSeed() {
@@ -27,10 +26,8 @@ function parseDataFile(filePath, userKey, seed) {
     return JSON.parse(fs.readFileSync(filePath));
   } catch(error) {
     // if there was some kind of error, return defaults instead.
-        console.log("Could not parse existing JSON file\n" + error);
         let first = code.encrypt(seed, userKey);
 	    fs.writeFileSync(filePath, JSON.stringify([{seed: first}]));
-        console.log("New JSON file created");
         return JSON.parse(fs.readFileSync(filePath));
   }
 }

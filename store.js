@@ -12,7 +12,6 @@ class Store {
 		this.path = path.join(userDataPath, opts.configName + '.json');
 		this.data = parseDataFile(this.path, opts.key);
 		this.key = opts.key;
-		console.log(this.data);
 	}
   
 	getCheck(){
@@ -37,10 +36,7 @@ class Store {
 	
 	remove(website, uname) {
 		for (var i = 1; i < this.data.length; i++) {
-			console.log("comparing " + website + " and " + this.data[i].website + "\ncomparing "
-				+ uname + " and " + this.data[i].username);
 			if ((website == this.data[i].website) && (uname == this.data[i].username)) {
-				console.log("Removing " + this.data[i]);
 				this.data.splice(i, 1);
 				break;
 			}
@@ -67,7 +63,6 @@ class Store {
 			  mnemonic: code.encrypt(mnemonic, this.key)
           });
       } catch (error) {
-          console.log("couldn't push data:\n" + error)
           // this.data = [{
           //     website: site,
           //     username: user,
@@ -75,7 +70,6 @@ class Store {
           // }];
       }
       fs.writeFileSync(this.path, JSON.stringify(this.data));
-      console.log(JSON.stringify(this.data));
     }
     
 }
@@ -87,12 +81,8 @@ function parseDataFile(filePath, userKey) {
     return JSON.parse(fs.readFileSync(filePath));
   } catch(error) {
     // if there was some kind of error, return defaults instead.
-		console.log("Could not parse existing JSON file\n" + error);
-		console.log("user input: " + userKey);
 		let first = code.encrypt("START PW LIST", userKey);
-		console.log(first);
 	    fs.writeFileSync(filePath, JSON.stringify([{item: first}]));
-        console.log("New JSON file created");
         return JSON.parse(fs.readFileSync(filePath));
   }
 }

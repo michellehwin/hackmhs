@@ -31,7 +31,6 @@
             e.preventDefault();
             const masterpass = document.querySelector('#masterpass').value;
             ipcRenderer.send("login", masterpass);
-            console.log("Login info sent to main.js");
         }
 
     </script>
