@@ -13,23 +13,20 @@
     <div class="container">
         <div class="row pt-4">
             <h1>Welcome to Psonic!</h1>
-            <p>We're here to make remembering your passwords easier! Secure passwords may be long and complicated,
-                but we'll generate some cool mnemonics to help you remember the important ones. Don't worry, they're all stored on
-                your computer in an encrypted format that only you can access! To get started, let's set your master password,
-                be sure to remember this one, as it's the only password we can't remember for you.
+            <p>Everyone knows that you should keep a secure password for every online (or offline) account you have. Unfortunately, that's much easier said than done because secure passwords are difficult to remember. With Psonic, this is no longer the case! Psonic is a password generator capable of generating and storing highly secure passwords, but also ships with a mnemonic generation algorithm. Using this technology, we're able to convert jumbled messes of passwords into easy to remember, grammatically and syntaxically correct sentences. 
             </p>
             <!-- TODO: add check password field -->
             <form>
+                <p>We store all your passwords in an AES encrypted file, so you're going to need a key to access them. Don't forget this password, as it's the only one Psonic can't help you remember, and it's required to access all your other passwords.</p>
                 <div class="form-group">
-                  <input autofocus type="text" class="form-control" id="masterpass" placeholder="Enter Master Password">
+                  <input autofocus type="password" class="form-control" id="masterpass" placeholder="Enter Master Password">
                   <small class="form-text text-muted">Make sure you can remember it!</small>
                 </div>
-                <p>Your passwords will be generated using your own seed to make them more secure,
-                  enter some random characters and numbers atleast 10 in length below.
+                <p>To randomly generate your passwords, we need a source of truly random information. Type in some random characters here. Really, you can even just keyboard mash.
                 </p>
                 <div class="form-group">
                   <input type="text" class="form-control" id="seed" placeholder="Enter Random Seed">
-                  <small class="form-text text-muted">Something like this: jdio^&^#2h(Hjf093NUH</small>
+                  <small class="form-text text-muted">Something like this: jdio^&^#2h(Hjf093NU872wd887eyH</small>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>
