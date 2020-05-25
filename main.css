@@ -46,3 +46,19 @@ h1{
 ul{
     list-style: none;
 }
+
+ul h3 {
+    font-weight: 600;
+}
+
+ul li a, ul li a:visited {
+    color: #112d4e !important;
+}
+
+ul li a:hover, ul li a:active {
+    color: #3f72af !important;
+}
+
+ul li.active a {
+    color: #dbe2ef !important;
+}

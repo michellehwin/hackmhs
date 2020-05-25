@@ -66,9 +66,18 @@ function createDiv(username, website, password, mnemonic){
     usernameLI.appendChild(usernameText);
     usernameLI.id = "username"
     websiteh3.appendChild(websiteText);
-    websiteLI.appendChild(websiteh3);
+    // websiteLI.appendChild(websiteh3);
     mnemonicLI.appendChild(mnemonicText);
     passwordLI.appendChild(passwordText);
+    if (website.substring(0, 4) == "http") {
+	} else {
+		websiteLink = "https://" + website;
+    }
+    const webA = document.createElement("a");
+    webA.href = websiteLink;
+    webA.target = "_blank"
+    webA.appendChild(websiteh3);
+    websiteLI.appendChild(webA);
     ul.appendChild(websiteLI);
     ul.appendChild(usernameLI);
     ul.appendChild(passwordLI);

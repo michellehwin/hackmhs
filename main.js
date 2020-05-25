@@ -7,7 +7,7 @@ const SimpleStore = require('./simplestore')
 const {generateApprovedPassword, initDictionary, generateMnemonic} = require('./generation.js');
 
 // SET ENV
-process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'dev';
 
 const{app, BrowserWindow, Menu, ipcMain} = electron;
 
@@ -31,6 +31,10 @@ app.on('ready', function () {
 	}));
 	mainWindow.on('closed', function () {
 		app.quit();
+	});
+	mainWindow.webContents.on('new-window', function(e, url) {
+		e.preventDefault();
+		require('electron').shell.openExternal(url);
 	});
 	//Tutorial
     const fileLocation = path.join((electron.app || electron.remote.app).getPath('userData'),'passwords.json');
