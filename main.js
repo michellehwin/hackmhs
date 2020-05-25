@@ -83,7 +83,7 @@ function createAddWindow() {
             nodeIntegration: true
         },
         width: 500,
-        height: 300,
+        height: 400,
         title: 'Add Password'
 	});
     // Load html into window
@@ -102,10 +102,15 @@ function createAddWindow() {
 
 }
 
-ipcMain.on('password:add', function (e, username, website) {
+ipcMain.on('password:add', function (e, username, website, userSeed) {
 	//generate pass and send to mainWindow
 	initDictionary();
-	const password = generateApprovedPassword(15, seed.getSeed(), [0, 1, 2, 3]);
+	let password;
+	if (userSeed !== null) {
+		password = generateApprovedPassword(15, userSeed, [0, 1, 2, 3]);
+	} else {
+		password = generateApprovedPassword(15, seed.getSeed(), [0, 1, 2, 3]);
+	}
 	const mnemonic = generateMnemonic(password);
     mainWindow.webContents.send('password:add', username, website, password, mnemonic);
     addWindow.close();

@@ -11,9 +11,11 @@
         <form>
             <div class="form-group">
                 <label for="">Account Username/Email</label>
-                <input class="form-control mb-3" type="text" id="username" autofocus>
+                <input class="form-control form-control-sm mb-3" type="text" id="username" autofocus>
                 <label for="">Website</label>
-                <input class="form-control"type="text" id="website">
+                <input class="form-control form-control-sm mb-3"type="text" id="website">
+                <label for="">Seed (optional)</label>
+                <input class="form-control form-control-sm" type="text" id="seed">
             </div>
             <button type="submit" class="btn btn-primary">Generate Password</button>
         </form>
@@ -29,7 +31,8 @@
             e.preventDefault();
             const username = document.querySelector('#username').value;
             const website = document.querySelector('#website').value;
-            ipcRenderer.send('password:add', username, website)
+            const seed = document.querySelector('#seed').value;
+            ipcRenderer.send('password:add', username, website, seed)
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
