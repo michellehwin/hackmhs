@@ -11,10 +11,10 @@ document.getElementById("add-password").addEventListener("click", function(){
 
 console.log("Main window loaded");
 
-ipcRenderer.on("create-JSON", function (e, mp) {
+ipcRenderer.on("create-JSON", function (e, mp, s) {
     console.log("create-JSON request received");
     console.log("userinput" + mp);
-    store = new Store({ configName: 'passwords', key: mp });
+    store = new Store({ configName: 'passwords', key: mp, seed: s});
     console.log("store object created " + store.getData());
 });
 

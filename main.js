@@ -3,6 +3,7 @@ const url = require('url');
 const path = require("path");
 const { code, code2, code3 } = require('./encrypter')
 const fs = require('fs');
+const SimpleStore = require('./simplestore')
 const {generateApprovedPassword, initDictionary, generateMnemonic} = require('./generation.js');
 
 var test = code.encrypt("START PW LIST", "1");
@@ -104,7 +105,7 @@ function createAddWindow() {
 ipcMain.on('password:add', function (e, username, website) {
 	//generate pass and send to mainWindow
 	initDictionary();
-	const password = generateApprovedPassword(10, seed, [0, 1, 2]);
+	const password = generateApprovedPassword(15, seed.getSeed(), [0, 1, 2, 3]);
 	const mnemonic = generateMnemonic(password);
     mainWindow.webContents.send('password:add', username, website, password, mnemonic);
     addWindow.close();
@@ -116,8 +117,8 @@ ipcMain.on("addPasswordWindow:open", function (e) {
 
 ipcMain.on('masterpass:set', function (e, mp, s) {
     masterpass = mp;
-	seed = s;
-	mainWindow.webContents.send("create-JSON", masterpass);
+	seed = new SimpleStore({configName: "seed", key: mp, seed: s});
+	mainWindow.webContents.send("create-JSON", masterpass, seed);
 	console.log("create-JSON request sent to mainWindow");
     tutorialWindow.close();
 })

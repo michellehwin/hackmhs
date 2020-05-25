@@ -10,18 +10,22 @@ class Store {
     const userDataPath = (electron.app || electron.remote.app).getPath('userData');
     // We'll use the `configName` property to set the file name and path.join to bring it all together as a string
     this.path = path.join(userDataPath, opts.configName + '.json');
-    this.data = parseDataFile(this.path, opts.key);
+    this.data = parseDataFile(this.path, opts.key, opts.seed);
 	this.key = opts.key;
+	this.seed = opts.seed;
 	console.log(this.data);
   }
   
   getCheck(){
       return this.data[0].item;
+	}
+	getSeed(){
+      return this.data[1].seed;
   }
   // This will just return the properties on the `data` object
   getData() {
     let dataArr = [];
-    for (var i=1; i < this.data.length; i++) {
+    for (var i=2; i < this.data.length; i++) {
       dataArr.push({
           website: this.data[i].website,
           username: this.data[i].username,
@@ -64,7 +68,7 @@ class Store {
     
 }
 
-function parseDataFile(filePath, userKey) {
+function parseDataFile(filePath, userKey, seed) {
   // We'll try/catch it in case the file doesn't exist yet, which will be the case on the first application run.
   // `fs.readFileSync` will return a JSON string which we then parse into a Javascript object
     try {
@@ -75,7 +79,7 @@ function parseDataFile(filePath, userKey) {
 		console.log("user input: " + userKey);
 		let first = code.encrypt("START PW LIST", userKey);
 		console.log(first);
-	    fs.writeFileSync(filePath, JSON.stringify([{item: first}]));
+	    fs.writeFileSync(filePath, JSON.stringify([{item: first}, {seed: seed}]));
         console.log("New JSON file created");
         return JSON.parse(fs.readFileSync(filePath));
   }
