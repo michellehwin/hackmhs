@@ -18,10 +18,17 @@ ipcRenderer.on("create-JSON", function (e, mp, s) {
 
 ipcRenderer.on("request-JSON", function (e, mp) {
     store = new Store({ configName: 'passwords', key: mp });
-    document.getElementById("add-password").disabled = false;
     ipcRenderer.send("JSON", store.getCheck());
+});
+
+ipcRenderer.on("login-success", e => {
+    document.getElementById("add-password").disabled = false;
     dataAdd(store);
 });
+
+ipcRenderer.on("passwordWindowClosed", e => {
+    document.getElementById("add-password").disabled = false;
+})
 
 
 function dataAdd(store) {
@@ -95,11 +102,3 @@ function createDiv(username, website, password, mnemonic){
     div.appendChild(ul);
     passContainer.appendChild(div);            
 }
-
-//Remove Item FIXTHIS
-// ul.addEventListener('dblclick', removeItem);
-
-// function removeItem(e) {
-//     console.log(e);
-//     e.target.remove();
-// }

@@ -93,9 +93,6 @@ function createAddWindow() {
     // Garbage collection handle
     addWindow.on('close', function () {
         addWindow = null;
-        try {
-            mainWindow.webContents.send('data:add', store);
-        } catch (error){}
 	})
 
 }
@@ -139,10 +136,11 @@ ipcMain.on("login", function (e, mp){
 	mainWindow.webContents.send("request-JSON", mp);
 	ipcMain.on("JSON", function (e, store) {
 		if ("START PW LIST" == code2.decrypt(store, mp)) {
-			loginWindow.close();
-		// Build menu from template
-		const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-		Menu.setApplicationMenu(mainMenu);
+            loginWindow.close();
+            mainWindow.webContents.send("login-success")
+            // Build menu from template
+            const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+            Menu.setApplicationMenu(mainMenu);
     	}
 	});
 });
