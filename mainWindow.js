@@ -82,6 +82,7 @@ function createDiv(username, website, password, mnemonic){
     }
     const webA = document.createElement("a");
     webA.href = websiteLink;
+    webA.className = "d-inline-block"
     webA.target = "_blank"
     webA.appendChild(websiteh3);
     websiteLI.appendChild(webA);
