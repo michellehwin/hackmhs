@@ -139,8 +139,10 @@ code {
     padding-bottom: 5%;
     > h1 {
         font-size: 4em;
-        padding-left: 2rem;
         padding-bottom: 2rem;
+        @include media-breakpoint-up(md) {
+            padding-left: 2rem;
+        }
     }
     img {
         height: 15rem;
